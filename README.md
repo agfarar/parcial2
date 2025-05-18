@@ -1,7 +1,5 @@
 ## Documentación Completa de la API - Parcial Práctico No.2
 
-Esta documentación detalla todos los endpoints disponibles para gestionar estudiantes, actividades y reseñas en el sistema.
-
 ---
 
 ## 1. Estudiantes
