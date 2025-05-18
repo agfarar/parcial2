@@ -1,98 +1,260 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+````markdown
+## Documentación Completa de la API – Parcial Práctico No. 2
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Esta documentación detalla todos los endpoints disponibles para gestionar estudiantes, actividades y reseñas en el sistema.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 1. Estudiantes
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 1.1 Crear Estudiante
 
-## Project setup
+- **Método:** `POST`  
+- **URL:** `http://localhost:3000/estudiantes`  
+- **Headers:**  
+  - `Content-Type: application/json`  
+- **Body (raw JSON):**
+  ```json
+  {
+    "cedula": 123456780,
+    "nombre": "Angel Farfan",
+    "correo": "a.farfana@uniandes.edu.co",
+    "programa": "Ingeniería",
+    "semestre": 5
+  }
+````
 
-```bash
-$ npm install
+* **Respuestas:**
+
+  * **201 Created**
+
+    ```json
+    {
+      "id": 1,
+      "cedula": 123456780,
+      "nombre": "Angel Farfan",
+      "correo": "a.farfana@uniandes.edu.co",
+      "programa": "Ingeniería",
+      "semestre": 5
+    }
+    ```
+  * **400 Bad Request**:
+
+    * Correo inválido (sin ‘@’)
+    * Semestre fuera de rango \[1–10]
+
+---
+
+### 1.2 Obtener Estudiante por ID
+
+* **Método:** `GET`
+* **URL:** `http://localhost:3000/estudiantes/{id}`
+* **Parámetros de ruta:**
+
+  * `id` (number) – Identificador del estudiante
+* **Respuestas:**
+
+  * **200 OK**
+
+    ```json
+    {
+      "id": 1,
+      "cedula": 123456780,
+      "nombre": "Angel Farfan",
+      "correo": "a.farfana@uniandes.edu.co",
+      "programa": "Ingeniería",
+      "semestre": 5,
+      "actividades": []
+    }
+    ```
+  * **404 Not Found**: Estudiante no encontrado
+
+---
+
+### 1.3 Inscribir Estudiante en Actividad
+
+* **Método:** `POST`
+* **URL:** `http://localhost:3000/estudiantes/{estudianteId}/inscribir/{actividadId}`
+* **Parámetros de ruta:**
+
+  * `estudianteId` (number) – ID del estudiante
+  * `actividadId` (number) – ID de la actividad
+* **Respuestas:**
+
+  * **200 OK**: Devuelve la actividad con el estudiante agregado
+  * **404 Not Found**:
+
+    * Estudiante no encontrado
+    * Actividad no encontrada
+  * **400 Bad Request**:
+
+    * Actividad no está abierta (`estado !== 0`)
+    * Estudiante ya inscrito
+    * Cupo agotado
+
+---
+
+## 2. Actividades
+
+### 2.1 Crear Actividad
+
+* **Método:** `POST`
+* **URL:** `http://localhost:3000/actividades`
+* **Headers:**
+
+  * `Content-Type: application/json`
+* **Body (raw JSON):**
+
+  ```json
+  {
+    "titulo": "Taller de Programacion Avanzada",
+    "fecha": "2025-06-01T10:00:00.000Z",
+    "cupoMaximo": 1,
+    "estado": 0
+  }
+  ```
+* **Validaciones:**
+
+  * `titulo`: mínimo 15 caracteres; solo letras, números y espacios
+* **Respuestas:**
+
+  * **201 Created**
+
+    ```json
+    {
+      "id": 3,
+      "titulo": "Taller de Programacion Avanzada",
+      "fecha": "2025-06-01T10:00:00.000Z",
+      "cupoMaximo": 1,
+      "estado": 0
+    }
+    ```
+  * **400 Bad Request**: Título inválido
+
+---
+
+### 2.2 Cambiar Estado de Actividad
+
+* **Método:** `PATCH`
+* **URL:** `http://localhost:3000/actividades/{id}/estado/{nuevoEstado}`
+* **Parámetros de ruta:**
+
+  * `id` (number) – ID de la actividad
+  * `nuevoEstado` (0|1|2) –
+
+    * `1` = cerrar (≥ 80 % cupo ocupado)
+    * `2` = finalizar (cupo lleno)
+* **Respuestas:**
+
+  * **200 OK**: Actividad actualizada
+  * **400 Bad Request**:
+
+    * No cumple requisito de cupo
+    * Estado inválido
+  * **404 Not Found**: Actividad no encontrada
+* **Ejemplo de error:**
+
+  ```json
+  HTTP/1.1 400 Bad Request
+  {
+    "message": "No cumple 80% del cupo para cerrar",
+    "error": "Bad Request",
+    "statusCode": 400
+  }
+  ```
+
+---
+
+### 2.3 Listar Actividades por Fecha
+
+* **Método:** `GET`
+* **URL:** `http://localhost:3000/actividades?fecha={ISO_DATE}`
+* **Query Params:**
+
+  * `fecha` – Fecha exacta (ISO 8601), e.g. `2025-06-01T10:00:00.000Z`
+* **Respuestas:**
+
+  * **200 OK**
+
+    ```json
+    [
+      {
+        "id": 9,
+        "titulo": "Taller de Programacion Avanzada",
+        "fecha": "2025-06-01T10:00:00.000Z",
+        "cupoMaximo": 1,
+        "estado": 0,
+        "estudiantes": []
+      }
+    ]
+    ```
+  * Array vacío si no hay actividades en esa fecha
+
+---
+
+## 3. Reseñas
+
+### 3.1 Crear Reseña
+
+* **Método:** `POST`
+* **URL:** `http://localhost:3000/resenas`
+* **Headers:**
+
+  * `Content-Type: application/json`
+* **Body (raw JSON):**
+
+  ```json
+  {
+    "comentario": "¡Excelente taller, aprendí mucho sobre NestJS!",
+    "calificacion": 5,
+    "fecha": "2025-05-01T10:00:00.000Z",
+    "estudianteId": 1,
+    "actividadId": 1
+  }
+  ```
+* **Reglas de negocio:**
+
+  1. La actividad debe existir y `estado === 2`
+  2. El estudiante debe estar inscrito en la actividad
+* **Respuestas:**
+
+  * **200 OK**: Reseña creada y retornada
+  * **404 Not Found**:
+
+    * Estudiante no encontrado
+    * Actividad no encontrada
+  * **400 Bad Request**:
+
+    * Actividad no finalizada
+    * Estudiante no inscrito
+
+---
+
+### 3.2 Obtener Reseña por ID
+
+* **Método:** `GET`
+* **URL:** `http://localhost:3000/resenas/{id}`
+* **Parámetros de ruta:**
+
+  * `id` (number) – ID de la reseña
+* **Respuestas:**
+
+  * **200 OK**
+
+    ```json
+    {
+      "id": 1,
+      "comentario": "¡Excelente taller, aprendí mucho sobre NestJS!",
+      "calificacion": 5,
+      "fecha": "2025-05-01T10:00:00.000Z",
+      "estudiante": { /* datos del estudiante */ },
+      "actividad": { /* datos de la actividad */ }
+    }
+    ```
+  * **404 Not Found**: Reseña no encontrada
+
+---
+
+```
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
