@@ -2,7 +2,7 @@
 
 Base URL: `{{base_url}}`, like `http://localhost:3000`
 
-Documentacion Oficial Postman: !https://documenter.getpostman.com/view/32637994/2sB2qXji8j
+Documentacion Oficial Postman: https://documenter.getpostman.com/view/32637994/2sB2qXji8j
 
 ---
 
