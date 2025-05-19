@@ -1,0 +1,1097 @@
+{
+	"info": {
+		"_postman_id": "30b733c0-88f1-410d-9984-7f180ef09b1f",
+		"name": "Parcial2",
+		"description": "Endpoints para gestionar estudiantes, actividades y reseñas del sistema de Parcial Práctico No. 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32637994",
+		"_collection_link": "https://restless-crater-138068.postman.co/workspace/0b32ba84-5361-4514-8d91-2d4a96fe5d8b/collection/32637994-30b733c0-88f1-410d-9984-7f180ef09b1f?action=share&source=collection_link&creator=32637994"
+	},
+	"item": [
+		{
+			"name": "Crear estudiante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {",
+							"  pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Retorna id del estudiante\", () => {",
+							"  const json = pm.response.json();",
+							"  pm.expect(json).to.have.property(\"id\");",
+							"});",
+							"pm.test(\"Status code is 400 for bad request\", () => {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"cedula\": 123456780,\n  \"nombre\": \"Angel Farfan\",\n  \"correo\": \"a.farfana@uniandes.edu.co\",\n  \"programa\": \"Ingeniería\",\n  \"semestre\": 5\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/estudiantes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "201 OK – Creación Exitosa",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cedula\": 123456780,\n  \"nombre\": \"Angel Farfan\",\n  \"correo\": \"a.farfana@uniandes.edu.co\",\n  \"programa\": \"Ingeniería\",\n  \"semestre\": 5\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/estudiantes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estudiantes"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "126"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"7e-bZMBjhbIR4u0GEUSgD2G7VbOEbM\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 May 2025 20:12:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"cedula\": 123456780,\n    \"nombre\": \"Angel Farfan\",\n    \"correo\": \"a.farfana@uniandes.edu.co\",\n    \"programa\": \"Ingeniería\",\n    \"semestre\": 5\n}"
+				},
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cedula\": 123456780,\n  \"nombre\": \"Angel Farfan\",\n  \"correo\": \"a\",\n  \"programa\": \"Ingeniería\",\n  \"semestre\": 5\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/estudiantes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Obtener Estudiante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.id).to.exist;",
+							"    pm.expect(responseData.cedula).to.exist;",
+							"    pm.expect(responseData.nombre).to.exist;",
+							"    pm.expect(responseData.correo).to.exist;",
+							"    pm.expect(responseData.programa).to.exist;",
+							"    pm.expect(responseData.semestre).to.exist;",
+							"    pm.expect(responseData.actividades).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Cedula is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.cedula).to.exist.and.to.be.a('number').and.to.satisfy((value) => value >= 0, \"Cedula must be a non-negative integer\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Nombre, correo, and programa are non-empty strings\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.nombre).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Nombre should not be empty\");",
+							"  pm.expect(responseData.correo).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Correo should not be empty\");",
+							"  pm.expect(responseData.programa).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Programa should not be empty\");",
+							"});",
+							"",
+							"var studentId = pm.response.json().id;",
+							"pm.globals.set(\"studentId\", studentId);",
+							"pm.test(\"Response status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/estudiantes/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/estudiantes/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estudiantes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "143"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"8f-Sw3nGTnq3p5qliL7cliYazlPTYE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 May 2025 20:17:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"cedula\": 123456780,\n    \"nombre\": \"Angel Farfan\",\n    \"correo\": \"a.farfana@uniandes.edu.co\",\n    \"programa\": \"Ingeniería\",\n    \"semestre\": 5,\n    \"actividades\": []\n}"
+				},
+				{
+					"name": "404 Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/estudiantes/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								"1"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Inscribir Actividad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"}); ",
+							"",
+							"pm.test(\"Status code is 404 for invalid student or course\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Response has actividad object\", function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.be.an(\"object\");",
+							"    pm.expect(json).to.have.property(\"id\");",
+							"    pm.expect(json).to.have.property(\"titulo\");",
+							"}); ",
+							"",
+							"pm.test(\"Estudiante inscrito aparece en la lista\", function () {",
+							"    const actividad = pm.response.json();",
+							"    pm.expect(actividad.estudiantes).to.be.an(\"array\").that.is.not.empty;",
+							"   ",
+							"    pm.expect(actividad.estudiantes.map(e => e.id)).to.include(1);",
+							"}); ",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/estudiantes/1/inscribir/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"estudiantes",
+						"1",
+						"inscribir",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "404 Not Found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/estudiantes/1/inscribir/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estudiantes",
+								"1",
+								"inscribir",
+								"2"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "201 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/estudiantes/1/inscribir/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"estudiantes",
+								"1",
+								"inscribir",
+								"1"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Crear Actividad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+							"pm.test(\"Response status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 100ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(100);",
+							"});",
+							"",
+							"pm.test(\"Response body has error message\", function () {",
+							"    pm.expect(pm.response.json().message).to.exist;",
+							"    pm.expect(pm.response.json().message).to.be.a('string');",
+							"});",
+							"",
+							"pm.test(\"Response body has error type\", function () {",
+							"    pm.expect(pm.response.json().error).to.exist;",
+							"    pm.expect(pm.response.json().error).to.be.a('string');",
+							"});",
+							"",
+							"pm.test(\"Response body has statusCode\", function () {",
+							"    pm.expect(pm.response.json().statusCode).to.exist;",
+							"    pm.expect(pm.response.json().statusCode).to.be.a('number');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"titulo\": \"Taller de Programacion Avanzada\",\n  \"fecha\": \"2025-06-01T10:00:00.000Z\",\n  \"cupoMaximo\": 1,\n  \"estado\": 0\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/actividades",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"actividades"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "201 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titulo\": \"Actividad Practica de Base de Datos\",\n  \"fecha\": \"2025-05-20T10:00:00Z\",\n  \"cupoMaximo\": 30\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/actividades",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"actividades"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "113"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"71-2v7PSwyhnaumZTJ12wMZA7AJogc\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 May 2025 21:23:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"titulo\": \"Actividad Practica de Base de Datos\",\n    \"fecha\": \"2025-05-20T10:00:00Z\",\n    \"cupoMaximo\": 30,\n    \"estado\": 0\n}"
+				},
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titulo\": \"Actividad Práctica de Base de Datos\",\n  \"fecha\": \"2025-05-20T10:00:00Z\",\n  \"cupoMaximo\": 30\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/actividades",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actividades"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Cambiar Estado",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response body has expected properties\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"message\");",
+							"    pm.expect(jsonData).to.have.property(\"error\");",
+							"    pm.expect(jsonData).to.have.property(\"statusCode\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/actividades/1/estado/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"actividades",
+						"1",
+						"estado",
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "400 Bad Request",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/actividades/2/estado/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"actividades",
+								"2",
+								"estado",
+								"1"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "87"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"57-1J/MlNuK0N3SzBmlp8vdy6yr8nE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 18 May 2025 21:36:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"No cumple 80% del cupo para cerrar\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+				},
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actividades/1/estado/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actividades",
+								"1",
+								"estado",
+								"2"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Listar Actividades por Fecha",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Response body is an empty array\", function () {",
+							"    const responseBody = pm.response.json();",
+							"    pm.expect(responseBody).to.be.an('array').that.is.empty;",
+							"});",
+							"pm.test(\"Status code is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"pm.test(\"Verify the presence of required headers\", function () {",
+							"    pm.response.to.have.header('X-Powered-By');",
+							"    pm.response.to.have.header('Content-Type');",
+							"    pm.response.to.have.header('Content-Length');",
+							"    pm.response.to.have.header('ETag');",
+							"    pm.response.to.have.header('Date');",
+							"    pm.response.to.have.header('Connection');",
+							"    pm.response.to.have.header('Keep-Alive');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/actividades?fecha=2025-06-01T10:00:00.000Z",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"actividades"
+					],
+					"query": [
+						{
+							"key": "fecha",
+							"value": "2025-06-01T10:00:00.000Z"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/actividades?fecha=2025-06-01T10:00:00.000Z",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"actividades"
+							],
+							"query": [
+								{
+									"key": "fecha",
+									"value": "2025-06-01T10:00:00.000Z"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "500 Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actividades?fecha=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actividades"
+							],
+							"query": [
+								{
+									"key": "fecha",
+									"value": ""
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Crear reseña",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Response has 'id', 'comentario', 'calificacion', 'fecha' properties\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response).to.have.property('id');",
+							"    pm.expect(response).to.have.property('comentario');",
+							"    pm.expect(response).to.have.property('calificacion');",
+							"    pm.expect(response).to.have.property('fecha');",
+							"});",
+							"",
+							"pm.test(\"Response has nested 'estudiante' and 'actividad' properties\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response).to.have.property('estudiante');",
+							"    pm.expect(response).to.have.property('actividad');",
+							"});",
+							"pm.test(\"Status code is 404 for Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"comentario\": \"¡Excelente taller, aprendí mucho sobre NestJS!\",\n  \"calificacion\": 5,\n  \"fecha\": \"2025-05-01T10:00:00.000Z\",\n  \"estudianteId\": 1,\n  \"actividadId\": 1\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/resenas",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"resenas"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "201 OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comentario\": \"¡Excelente taller, aprendí mucho sobre NestJS!\",\n  \"calificacion\": 5,\n  \"fecha\": \"2025-05-01T10:00:00.000Z\",\n  \"estudianteId\": 1,\n  \"actividadId\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/resenas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"resenas"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "404 Not Found",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comentario\": \"¡Excelente taller, aprendí mucho sobre NestJS!\",\n  \"calificacion\": 5,\n  \"fecha\": \"2025-05-01T10:00:00.000Z\",\n  \"estudianteId\": 100,\n  \"actividadId\": 2\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/resenas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resenas"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Obtener Reseña",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Response body has 'id', 'comentario', 'calificacion', 'fecha', 'estudiante', and 'actividad' properties\", function () {",
+							"    const responseBody = pm.response.json();",
+							"    pm.expect(responseBody).to.have.property('id');",
+							"    pm.expect(responseBody).to.have.property('comentario');",
+							"    pm.expect(responseBody).to.have.property('calificacion');",
+							"    pm.expect(responseBody).to.have.property('fecha');",
+							"    pm.expect(responseBody).to.have.property('estudiante');",
+							"    pm.expect(responseBody).to.have.property('actividad');",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"comentario\": \"¡Excelente taller, aprendí mucho sobre NestJS!\",\n  \"calificacion\": 5,\n  \"fecha\": \"2025-05-01T10:00:00.000Z\",\n  \"estudianteId\": 1,\n  \"actividadId\": 1\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}/resenas/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"resenas",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comentario\": \"¡Excelente taller, aprendí mucho sobre NestJS!\",\n  \"calificacion\": 5,\n  \"fecha\": \"2025-05-01T10:00:00.000Z\",\n  \"estudianteId\": 1,\n  \"actividadId\": 1\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:3000/resenas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"resenas",
+								"1"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "404 Not found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comentario\": \"¡Excelente taller, aprendí mucho sobre NestJS!\",\n  \"calificacion\": 5,\n  \"fecha\": \"2025-05-01T10:00:00.000Z\",\n  \"estudianteId\": 1,\n  \"actividadId\": 1\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}/resenas/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resenas",
+								"1"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
