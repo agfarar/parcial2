@@ -1,6 +1,6 @@
 ## Documentación Completa de la API - Parcial Práctico No.2
 
-Base URL: `{{base_url}}`, por ejemplo `http://localhost:3000`
+Base URL: `{{base_url}}`, like `http://localhost:3000`
 
 ---
 
